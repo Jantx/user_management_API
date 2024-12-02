@@ -11,7 +11,7 @@ export const app = express();
 //middlewares
 app.use(express.json());
 
-app.use('/api/public/:id',userRouter, cors(corsOptions), customsM.methodLimiter(['GET','POST']), (req,res)=>{
+app.use('/api/public',userRouter, cors(corsOptions), customsM.methodLimiter(['GET','POST']), (req,res)=>{
     res.json({"message":'public route'})
 })
 

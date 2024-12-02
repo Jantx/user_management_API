@@ -1,9 +1,19 @@
-export const validateBody = (fields) =>{
-    return (req,res,next) => {
-        const missingFields = fields.filter(field => !req.body[field]);
-        if (missingFields.length > 0){
-            return res.status(400).send(`Missing Fields: ${missingFields.join(", ")}`);
-        }
-        next();
+import jwt from 'jsonwebtoken';
+
+export const authenticateToken = (req, res, next) => {
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];  // "Bearer <token>"
+
+    if (!token) {
+        return res.status(401).send({ message: 'Access Denied. No token provided.' });
     }
-}
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).send({ message: 'Invalid or expired token' });
+        }
+
+        req.user = decoded;
+        next();
+    });
+};
+
