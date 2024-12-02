@@ -16,5 +16,5 @@ app.use('/api/public/:id',userRouter, cors(corsOptions), customsM.methodLimiter(
 })
 
 app.use('/api/private',userRouter, (req,res)=>{
-    res.json({message:'private route'})
+    res.json({"message":'private route'})
 })

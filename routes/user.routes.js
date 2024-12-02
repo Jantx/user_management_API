@@ -1,30 +1,27 @@
 //Imports
 import express from 'express';
 import * as userController from '../controllers/user.controller.js';
-
+import * as authMidle from '../middlewares/auth.middleware.js'
 //Router
 export const userRouter = express.Router();
 
 //Routes
 
-//Login & Register//
-
-userRouter.post('/register', userController.registerUser);
-userRouter.post('/login', userController.loginUser);
-
-//Data//
-
 //GET
-userRouter.get('/', userController.getAllUsers);
-userRouter.get('/:id', userController.getUserById);
+userRouter.get('/users/get-users', userController.getAllUsers);
+userRouter.get('/users/get-user/:id', userController.getUserById);
 
 //POST
-userRouter.post('/', userController.addUser);
+
+//Login & Register//
+userRouter.post('/register', authMidle.validateBody(["email", "password","firstName"]), userController.registerUser);
+userRouter.post('/login', authMidle.validateBody(["email", "password"]), userController.loginUser);
+
 
 //PUT
-userRouter.put('/:id', userController.editUser);
+userRouter.put('users/update-user/:id',authMidle.validateBody(["email", "password","firstName"]), userController.editUser);
 
 //DELETE
-userRouter.delete('/:id', userController.deleteUser)
+userRouter.delete('users/delete-user/:id', userController.deleteUser)
 
 

@@ -1,4 +1,3 @@
-
 export const methodLimiter = (allowedMethods) => {
     return (req, res, next) => {
       if (!allowedMethods.includes(req.method)) {
